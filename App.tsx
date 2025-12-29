@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage';
 import OpportunitiesPage from './pages/OpportunitiesPage';
 import OpportunityDetailPage from './pages/OpportunityDetailPage';
 import SubmitOpportunityPage from './pages/SubmitOpportunityPage';
+import LearnMorePage from './pages/LearnMorePage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -18,6 +19,7 @@ const AppContent: React.FC = () => {
                     <Route path="/opportunities" element={<OpportunitiesPage />} />
                     <Route path="/opportunity/:id" element={<OpportunityDetailPage />} />
                     <Route path="/submit" element={<SubmitOpportunityPage />} />
+                    <Route path="/learn-more" element={<LearnMorePage />} />
                 </Routes>
             </main>
             <Footer />

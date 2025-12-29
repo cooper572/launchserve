@@ -93,7 +93,7 @@ const LandingPage: React.FC = () => {
             <Link to="/opportunities" className="flex items-center justify-center rounded-full h-14 px-8 bg-white text-primary hover:bg-gray-50 text-lg font-bold transition-all shadow-lg">
               Find Opportunities
             </Link>
-            <Link to="/submit" className="flex items-center justify-center rounded-full h-14 px-8 border-2 border-white/30 bg-primary hover:bg-white/10 text-white text-lg font-bold transition-all">
+            <Link to="/learn-more" className="flex items-center justify-center rounded-full h-14 px-8 border-2 border-white/30 bg-primary hover:bg-white/10 text-white text-lg font-bold transition-all">
               Learn More
             </Link>
           </div>
