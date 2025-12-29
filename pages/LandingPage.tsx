@@ -37,7 +37,7 @@ const LandingPage: React.FC = () => {
             </div>
             <div className="w-full lg:w-1/2 flex justify-center animate-slide-in-right">
               <div className="relative w-full max-w-[600px] aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl bg-gray-100 hover-lift">
-                <img src="https://picsum.photos/seed/hero/600/450" alt="Group of diverse teenagers working together on a community garden project" className="w-full h-full object-cover" />
+                <img src="https://i.cbc.ca/1.3209819.1441050661!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/back-to-school-2015-mandatory-volunteer-hours.jpg" alt="Group of diverse teenagers working together on a community garden project" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
