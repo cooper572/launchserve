@@ -502,5 +502,41 @@
       "Community",
       "Leadership"
     ]
+  },
+  {
+    "id": "21",
+    "organization": "Team Trees (in partnership with the Arbor Day Foundation)",
+    "contactEmail": "info@teamtrees.org",
+    "title": "Join #TeamTrees: Plant, advocate, and fundraise to grow forests",
+    "shortDescription": "Support global reforestation with #TeamTrees—$1 plants a tree. Teens can volunteer remotely or locally through advocacy, fundraising, and planting events.",
+    "fullDescription": "<section><header><h2>#TeamTrees — one dollar, one tree</h2></header><p><strong>Team Trees</strong> is a global reforestation movement launched by creators and communities to fund and plant millions of trees through the <em>Arbor Day Foundation</em>. Every $1 donated plants one tree, and teens can help by organizing micro-fundraisers, sharing educational content, and volunteering at local tree-planting days.</p><figure><img src=\"https://upload.wikimedia.org/wikipedia/commons/1/1a/Team_Trees_logo.svg\" alt=\"Team Trees logo\" style=\"max-width:220px;height:auto;\"><figcaption>Official #TeamTrees logo.</figcaption></figure><figure><img src=\"https://upload.wikimedia.org/wikipedia/commons/6/69/Tree_planting_event.jpg\" alt=\"Volunteers planting young trees during a community event\" style=\"max-width:100%;height:auto;border-radius:6px;\"><figcaption>Community volunteers planting saplings at a reforestation event.</figcaption></figure><hr><h3>What you’ll do</h3><ul><li><strong>Fundraise:</strong> Host a $1-per-tree drive at school or online (class challenges, livestreams, bake sales, art auctions).</li><li><strong>Advocate:</strong> Create posts, short videos, or infographics explaining why trees matter (air quality, biodiversity, climate resilience).</li><li><strong>Volunteer locally:</strong> Join or help coordinate tree-planting days with community partners and follow proper planting guidelines.</li><li><strong>Track impact:</strong> Celebrate milestones (100, 500, 1,000+ trees) and share progress with your community.</li></ul><h3>Why it matters</h3><p>Trees restore habitats, stabilize soils, improve air quality, and support communities. Planting the <strong>right tree in the right place</strong> improves long-term survival and ecological benefits.</p><h3>Getting started</h3><ol><li><strong>Set a goal:</strong> Pick a target (e.g., 500 trees = $500) and a timeline.</li><li><strong>Create your page:</strong> Visit <a href=\"https://teamtrees.org\" target=\"_blank\" rel=\"noopener\">teamtrees.org</a> to start a fundraiser or donate.</li><li><strong>Mobilize:</strong> Invite classmates, clubs, and family; ask local businesses to match donations.</li><li><strong>Plant smart:</strong> If you join a planting day, use native species, follow spacing guidelines, and water responsibly.</li></ol><blockquote><p>Tip: Pair each $1 donation with a quick educational fact to make your campaign memorable.</p></blockquote><h3>Accessibility & safety</h3><ul><li><strong>Flexible commitments:</strong> Help from home or join occasional weekend plantings.</li><li><strong>Safety first:</strong> Wear gloves, closed-toe shoes, and follow adult/organizer instructions during events.</li><li><strong>Inclusive participation:</strong> Non-planting roles (graphics, outreach, logistics) are equally impactful.</li></ul><h3>Recognition</h3><p>Log volunteer hours for school credit, create a portfolio of campaigns and events, and request certificates for milestone contributions.</p><h3>Call to action</h3><p><a href=\"https://teamtrees.org\" target=\"_blank\" rel=\"noopener\" style=\"display:inline-block;padding:10px 16px;background:#6FBA0D;color:#fff;border-radius:6px;text-decoration:none;font-weight:600;\">Join #TeamTrees</a></p></section>",
+    "ageRange": {
+      "min": 13,
+      "max": 18
+    },
+    "timeCommitment": "Flexible (1–3 hrs/week or one-off events)",
+    "location": "Global (remote advocacy/fundraising) + local planting sites via partners",
+    "type": "Online & In-Person",
+    "requirements": [
+      "Parental/guardian consent for volunteers under 18",
+      "Internet access for remote advocacy and fundraising",
+      "Ability to attend local events if participating in planting days",
+      "Follow organizer safety guidance and use appropriate protective gear",
+      "Respect local environmental regulations and plant native species when applicable"
+    ],
+    "imageUrl": "https://tse4.mm.bing.net/th/id/OIP.lk9342y246K3yxn12goD8QHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
+    "tags": [
+      "environment",
+      "reforestation",
+      "trees",
+      "sustainability",
+      "climate-action",
+      "youth-volunteer",
+      "fundraising",
+      "community-service",
+      "social-media-advocacy",
+      "STEM-outreach",
+      "outdoor-activities"
+    ]
   }
 ]
