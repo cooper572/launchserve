@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LaunchServe - Nonprofit Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white h-screen overflow-hidden flex">
+<!-- Sidebar -->
+<aside class="w-64 bg-white dark:bg-slate-900 h-full flex flex-col border-r border-slate-200 dark:border-slate-800 hidden md:flex shrink-0">
+<div class="p-6">
+<div class="flex flex-col">
+<h1 class="text-primary text-xl font-bold tracking-tight flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-size: 28px;">volunteer_activism</span>
+                    LaunchServe
+                </h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium mt-1">Nonprofit Admin</p>
+</div>
+</div>
+<nav class="flex-1 px-4 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary dark:text-primary dark:bg-primary/20" href="#">
+<span class="material-symbols-outlined text-[24px] fill-1">checklist</span>
+<span class="text-sm font-bold">Opportunities</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">group</span>
+<span class="text-sm font-medium">Applications</span>
+<span class="ml-auto bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3 New</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">account_circle</span>
+<span class="text-sm font-medium">Profile</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<button class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-colors">
+<span class="material-symbols-outlined text-[24px]">logout</span>
+<span class="text-sm font-medium">Sign Out</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-y-auto">
+<!-- Top Navigation -->
+<header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-20 px-6 py-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Welcome, GreenEarth Foundation</h2>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative flex items-center justify-center size-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-700 mx-1"></div>
+<div class="flex items-center gap-3 cursor-pointer">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-slate-100 dark:ring-slate-800" data-alt="Nonprofit logo featuring a stylized green leaf" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCHQrtRcqfIU9yzlGj2VMivtcCVGs8y7VP6YzHI3opBbfRIytNnKHdWPcufBOD61FuA8_xyH5fQyG2Cjn5uvhAVlTVi8rKVAPdsUWBqae7Qtvi5DVTd96fAsg_cJS6K09NQhzjJVEpUeJMcJFiW2PFsbVPdfIUS98L5Ye2x0QlxN3D35o7l38p_bp6m-_o1MFZHzYocs3Ge-OV9XpYQ7IGDrWxUfTMT3j6q8GtaG14XrbXKajKtciO8GbGtdBTrKwh9RDitGsZvKGwS");'></div>
+<div class="hidden sm:flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Jane Doe</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Admin</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 hidden sm:block">expand_more</span>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="p-6 md:p-10 max-w-7xl mx-auto w-full flex flex-col gap-8 pb-20">
+<!-- Heading & CTA -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Manage Opportunities</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base">Track and manage your volunteer listings and applications.</p>
+</div>
+<button class="flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-bold py-3 px-5 rounded-xl transition-all shadow-lg shadow-blue-500/20 active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>Create New Opportunity</span>
+</button>
+</div>
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Active Listings</p>
+<span class="p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg">
+<span class="material-symbols-outlined text-[20px]">list_alt</span>
+</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-3xl font-bold text-slate-900 dark:text-white">4</p>
+<p class="text-emerald-600 dark:text-emerald-400 text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                            +1 this week
+                        </p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Pending Applications</p>
+<span class="p-2 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-lg">
+<span class="material-symbols-outlined text-[20px]">hourglass_empty</span>
+</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-3xl font-bold text-slate-900 dark:text-white">12</p>
+<p class="text-emerald-600 dark:text-emerald-400 text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                            +3 new
+                        </p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Student Reach</p>
+<span class="p-2 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 rounded-lg">
+<span class="material-symbols-outlined text-[20px]">school</span>
+</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-3xl font-bold text-slate-900 dark:text-white">340</p>
+<p class="text-emerald-600 dark:text-emerald-400 text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                            +15%
+                        </p>
+</div>
+</div>
+</div>
+<!-- Opportunities List Section -->
+<div class="flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<!-- Search and Filters -->
+<div class="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-4 items-center justify-between bg-slate-50/50 dark:bg-slate-900/50">
+<div class="relative w-full sm:max-w-md">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 text-[20px]">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm" placeholder="Search opportunities by title..." type="text"/>
+</div>
+<div class="flex gap-2 w-full sm:w-auto">
+<button class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+                            Filter
+                        </button>
+<button class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-[20px]">sort</span>
+                            Sort
+                        </button>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
+<thead class="bg-slate-50 dark:bg-slate-800/50">
+<tr>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Opportunity Title</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Status</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Date Posted</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Metrics</th>
+<th class="px-6 py-4 text-right text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Actions</th>
+</tr>
+</thead>
+<tbody class="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-800">
+<!-- Row 1 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="size-10 flex-shrink-0 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400">
+<span class="material-symbols-outlined">campaign</span>
+</div>
+<div class="ml-4">
+<div class="text-sm font-bold text-slate-900 dark:text-white">Social Media Intern</div>
+<div class="text-xs text-slate-500 dark:text-slate-400">Remote • 5 hrs/week</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+<span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-slate-600 dark:text-slate-300">Oct 24, 2023</div>
+<div class="text-xs text-slate-400">2 days ago</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-slate-600 dark:text-slate-300" title="Applicants">
+<span class="material-symbols-outlined text-[18px] text-slate-400">group</span>
+<span class="text-sm font-medium">5</span>
+</div>
+<div class="flex items-center gap-1 text-slate-600 dark:text-slate-300" title="Views">
+<span class="material-symbols-outlined text-[18px] text-slate-400">visibility</span>
+<span class="text-sm font-medium">45</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-slate-400 hover:text-primary transition-colors p-2 hover:bg-primary/10 rounded-lg" title="Edit">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="Archive">
+<span class="material-symbols-outlined text-[20px]">archive</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="size-10 flex-shrink-0 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center text-yellow-600 dark:text-yellow-400">
+<span class="material-symbols-outlined">calculate</span>
+</div>
+<div class="ml-4">
+<div class="text-sm font-bold text-slate-900 dark:text-white">Math Tutor</div>
+<div class="text-xs text-slate-500 dark:text-slate-400">In-person • 2 hrs/week</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
+<span class="size-1.5 rounded-full bg-amber-500"></span>
+                                        Pending Review
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-slate-600 dark:text-slate-300">Oct 25, 2023</div>
+<div class="text-xs text-slate-400">1 day ago</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[18px] text-slate-400">group</span>
+<span class="text-sm font-medium">0</span>
+</div>
+<div class="flex items-center gap-1 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[18px] text-slate-400">visibility</span>
+<span class="text-sm font-medium">12</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-slate-400 hover:text-primary transition-colors p-2 hover:bg-primary/10 rounded-lg" title="Edit">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="Archive">
+<span class="material-symbols-outlined text-[20px]">archive</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="size-10 flex-shrink-0 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+<span class="material-symbols-outlined">park</span>
+</div>
+<div class="ml-4">
+<div class="text-sm font-bold text-slate-900 dark:text-white">Weekend Park Cleanup</div>
+<div class="text-xs text-slate-500 dark:text-slate-400">In-person • One-time event</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+<span class="size-1.5 rounded-full bg-slate-500"></span>
+                                        Completed
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-slate-600 dark:text-slate-300">Oct 10, 2023</div>
+<div class="text-xs text-slate-400">2 weeks ago</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[18px] text-slate-400">group</span>
+<span class="text-sm font-medium">20</span>
+</div>
+<div class="flex items-center gap-1 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[18px] text-slate-400">visibility</span>
+<span class="text-sm font-medium">112</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-slate-400 hover:text-primary transition-colors p-2 hover:bg-primary/10 rounded-lg" title="Edit">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="Archive">
+<span class="material-symbols-outlined text-[20px]">archive</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<div class="size-10 flex-shrink-0 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div class="ml-4">
+<div class="text-sm font-bold text-slate-900 dark:text-white">Food Drive Coordinator</div>
+<div class="text-xs text-slate-500 dark:text-slate-400">In-person • 10 hrs/week</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+<span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="text-sm text-slate-600 dark:text-slate-300">Oct 20, 2023</div>
+<div class="text-xs text-slate-400">5 days ago</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[18px] text-slate-400">group</span>
+<span class="text-sm font-medium">8</span>
+</div>
+<div class="flex items-center gap-1 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[18px] text-slate-400">visibility</span>
+<span class="text-sm font-medium">67</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-slate-400 hover:text-primary transition-colors p-2 hover:bg-primary/10 rounded-lg" title="Edit">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="Archive">
+<span class="material-symbols-outlined text-[20px]">archive</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="bg-white dark:bg-slate-900 px-4 py-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between sm:px-6">
+<div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+<div>
+<p class="text-sm text-slate-500 dark:text-slate-400">
+                                Showing <span class="font-bold text-slate-900 dark:text-white">1</span> to <span class="font-bold text-slate-900 dark:text-white">4</span> of <span class="font-bold text-slate-900 dark:text-white">4</span> results
+                            </p>
+</div>
+<div>
+<nav aria-label="Pagination" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+<a class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700" href="#">
+<span class="sr-only">Previous</span>
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</a>
+<a aria-current="page" class="z-10 bg-primary/10 border-primary text-primary relative inline-flex items-center px-4 py-2 border text-sm font-bold" href="#">1</a>
+<a class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700" href="#">
+<span class="sr-only">Next</span>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

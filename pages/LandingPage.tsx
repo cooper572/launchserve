@@ -44,40 +44,55 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Section - Bento Grid */}
       <section className="w-full bg-background-light py-16 lg:py-24">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-[#111418] text-3xl sm:text-4xl font-bold tracking-tight mb-4">Why LaunchServe?</h2>
             <p className="text-[#617589] text-lg max-w-2xl mx-auto">We bridge the gap between eager students and local organizations to create lasting community impact.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-start gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-accent-green-light text-accent-green flex items-center justify-center mb-2">
-                <span className="material-symbols-outlined text-3xl">location_on</span>
-              </div>
-              <div>
-                <h3 className="text-[#111418] text-xl font-bold mb-2">Local Opportunities</h3>
-                <p className="text-[#617589] leading-relaxed">Discover nonprofits right in your neighborhood needing your help. No long commutes, just local impact.</p>
+          
+          {/* Bento Grid Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 lg:gap-6">
+            {/* Large Feature - Tailored for Me (spans 2 columns, 2 rows) */}
+            <div className="md:col-span-2 md:row-span-2 bg-gradient-to-br from-primary to-blue-600 p-8 lg:p-10 rounded-3xl shadow-lg hover:shadow-xl transition-all group relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm text-white flex items-center justify-center mb-6">
+                  <span className="material-symbols-outlined text-4xl">auto_awesome</span>
+                </div>
+                <h3 className="text-white text-2xl lg:text-3xl font-bold mb-4">Tailored For You</h3>
+                <p className="text-blue-100 text-lg leading-relaxed mb-6">
+                  Our smart matching algorithm analyzes your interests, skills, and availability to recommend opportunities that perfectly fit your profile. Get personalized match scores and discover the most relevant volunteer work.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-semibold">Smart Matching</span>
+                  <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-semibold">Match Scores</span>
+                  <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-semibold">Personalized</span>
+                </div>
+                <Link to="/signup" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg">
+                  Get Started
+                  <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </Link>
               </div>
             </div>
-            <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-start gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-blue-50 text-primary flex items-center justify-center mb-2">
-                <span className="material-symbols-outlined text-3xl">verified_user</span>
+
+            {/* Local Opportunities */}
+            <div className="md:col-span-2 bg-white p-6 lg:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+              <div className="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-2xl">location_on</span>
               </div>
-              <div>
-                <h3 className="text-[#111418] text-xl font-bold mb-2">Youth-Friendly</h3>
-                <p className="text-[#617589] leading-relaxed">Every listed opportunity is verified as safe, educational, and appropriate for teens ages 13-18.</p>
-              </div>
+              <h3 className="text-[#111418] text-xl font-bold mb-3">Local Opportunities</h3>
+              <p className="text-[#617589] leading-relaxed">Discover nonprofits right in your neighborhood. No long commutes, just local impact.</p>
             </div>
-            <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-start gap-4">
-               <div className="w-14 h-14 rounded-2xl bg-accent-green-light text-accent-green flex items-center justify-center mb-2">
-                 <span className="material-symbols-outlined text-3xl">bar_chart</span>
-               </div>
-               <div>
-                 <h3 className="text-[#111418] text-xl font-bold mb-2">Impactful</h3>
-                 <p className="text-[#617589] leading-relaxed">Track your volunteer hours and visualize the real-world difference you are making over time.</p>
-               </div>
+
+            {/* Youth-Friendly */}
+            <div className="md:col-span-2 bg-white p-6 lg:p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-2xl">verified_user</span>
+              </div>
+              <h3 className="text-[#111418] text-xl font-bold mb-3">Youth-Friendly</h3>
+              <p className="text-[#617589] leading-relaxed">Every opportunity is verified as safe and appropriate for teens ages 13-18.</p>
             </div>
           </div>
         </div>

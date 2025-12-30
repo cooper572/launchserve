@@ -1,6 +1,9 @@
-import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import RichTextEditor from '../components/RichTextEditor';
+import { supabase, uploadImage } from '../supabaseClient';
+import { frontendToDb } from '../types';
+import { useAuth } from '../contexts/AuthContext';
 import '../editor.css';
 import '../animations.css';
 
@@ -18,7 +21,7 @@ interface FormData {
   shortDescription: string;
   fullDescription: string;
   tags: string;
-  type: 'In-Person' | 'Remote';
+  type: 'In-Person' | 'Remote' | 'Hybrid';
   location: string;
   timeCommitment: string;
   timeCommitmentUnit: string;
@@ -30,27 +33,56 @@ interface FormData {
 const SubmitOpportunityPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [iconPreview, setIconPreview] = useState<string | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const iconInputRef = useRef<HTMLInputElement>(null);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState<FormData>({
     organization: '', contactEmail: '', contactPhone: '', website: '',
     facebook: '', instagram: '', twitter: '', linkedin: '',
     title: '', formLink: '', shortDescription: '', fullDescription: '',
     tags: '', type: 'In-Person', location: '', timeCommitment: '',
-    timeCommitmentUnit: 'hrs/week', ageMin: 13, ageMax: 18, requirements: '',
+    timeCommitmentUnit: 'hours/week', ageMin: 13, ageMax: 18, requirements: '',
   });
+
+  useEffect(() => {
+    // Pre-fill organization details if user is an organization
+    const loadOrganizationData = async () => {
+      if (!user) return;
+
+      const accountType = user.user_metadata?.account_type;
+      if (accountType === 'organization') {
+        const { data, error } = await supabase
+          .from('organization_profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+
+        if (data && !error) {
+          setFormData(prev => ({
+            ...prev,
+            organization: data.organization_name,
+            contactEmail: user.email || '',
+          }));
+        }
+      }
+    };
+
+    loadOrganizationData();
+  }, [user]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleTypeChange = (type: 'In-Person' | 'Remote') => {
+  const handleTypeChange = (type: 'In-Person' | 'Remote' | 'Hybrid') => {
     setFormData(prev => ({ ...prev, type, location: type === 'Remote' ? 'Online' : prev.location }));
   };
 
@@ -71,80 +103,99 @@ const SubmitOpportunityPage: React.FC = () => {
     }
   };
 
-  const uploadImage = async (file: File): Promise<string> => {
-    const formData = new FormData();
-    formData.append('image', file);
-    const response = await fetch('/api/upload', { method: 'POST', body: formData });
-    const data = await response.json();
-    return data.imageUrl;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
+    
     try {
+      // Upload images to Supabase Storage
       let iconUrl = '';
-      let imageUrl = '';
+      let thumbnailUrl = '';
       
-      if (iconFile) iconUrl = await uploadImage(iconFile);
-      if (thumbnailFile) imageUrl = await uploadImage(thumbnailFile);
+      if (iconFile) {
+        const url = await uploadImage(iconFile, 'icons');
+        if (url) iconUrl = url;
+      }
+      
+      if (thumbnailFile) {
+        const url = await uploadImage(thumbnailFile, 'thumbnails');
+        if (url) thumbnailUrl = url;
+      }
 
-      const response = await fetch('/api/opportunities');
-      const existing = await response.json();
-      const maxId = existing.reduce((max: number, opp: { id: string }) => Math.max(max, parseInt(opp.id)), 0);
-      
-      const newOpp = {
-        id: (maxId + 1).toString(),
-        organization: formData.organization,
-        contactEmail: formData.contactEmail,
-        ...(formData.contactPhone && { contactPhone: formData.contactPhone }),
-        ...(formData.website && { website: formData.website }),
-        ...((formData.facebook || formData.instagram || formData.twitter || formData.linkedin) && {
+      // Prepare opportunity data
+      const opportunityData = {
+        ...frontendToDb({
+          organization: formData.organization,
+          contactEmail: formData.contactEmail,
+          contactPhone: formData.contactPhone || undefined,
+          website: formData.website || undefined,
           socialMedia: {
-            ...(formData.facebook && { facebook: formData.facebook }),
-            ...(formData.instagram && { instagram: formData.instagram }),
-            ...(formData.twitter && { twitter: formData.twitter }),
-            ...(formData.linkedin && { linkedin: formData.linkedin }),
-          }
+            facebook: formData.facebook || undefined,
+            instagram: formData.instagram || undefined,
+            twitter: formData.twitter || undefined,
+            linkedin: formData.linkedin || undefined,
+          },
+          title: formData.title,
+          shortDescription: formData.shortDescription,
+          fullDescription: formData.fullDescription,
+          ageRange: { min: formData.ageMin, max: formData.ageMax },
+          timeCommitment: formData.timeCommitment,
+          location: formData.type === 'Remote' ? 'Online' : formData.location,
+          type: formData.type,
+          requirements: formData.requirements.split(',').map(r => r.trim()).filter(r => r),
+          imageUrl: thumbnailUrl,
+          iconUrl: iconUrl || undefined,
+          formLink: formData.formLink || undefined,
+          tags: formData.tags.split(',').map(t => t.trim()).filter(t => t),
+          timeCommitmentUnit: formData.timeCommitmentUnit,
         }),
-        title: formData.title,
-        shortDescription: formData.shortDescription,
-        fullDescription: formData.fullDescription,
-        ageRange: { min: formData.ageMin, max: formData.ageMax },
-        timeCommitment: `${formData.timeCommitment} ${formData.timeCommitmentUnit}`,
-        location: formData.type === 'Remote' ? 'Online' : formData.location,
-        type: formData.type,
-        requirements: formData.requirements.split(',').map(r => r.trim()).filter(r => r),
-        ...(imageUrl && { imageUrl }),
-        ...(iconUrl && { iconUrl }),
-        ...(formData.formLink && { formLink: formData.formLink }),
-        tags: formData.tags.split(',').map(t => t.trim()).filter(t => t),
+        organization_id: user?.id, // Link to organization
       };
 
-      await fetch('/api/opportunities', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify([...existing, newOpp]),
-      });
+      // Insert into Supabase
+      const { error: insertError } = await supabase
+        .from('opportunities')
+        .insert([opportunityData]);
+
+      if (insertError) {
+        console.error('Supabase insert error:', insertError);
+        setError('Failed to submit opportunity. Please try again.');
+        return;
+      }
+
       setSubmitted(true);
     } catch (err) {
-      console.error(err);
-      setSubmitted(true);
+      console.error('Submit error:', err);
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   if (submitted) {
+    const isOrganization = user?.user_metadata?.account_type === 'organization';
+    
     return (
       <div className="flex min-h-screen w-full flex-col items-center justify-center text-center px-4 page-transition">
         <div className="bg-white p-10 rounded-2xl shadow-lg border border-gray-100 animate-scale-in">
           <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 animate-bounce">
             <span className="material-symbols-outlined text-3xl text-green-600">check</span>
           </div>
-          <h1 className="text-2xl font-bold mb-2">Submission Received!</h1>
-          <p className="text-gray-600 mb-6">Thank you for submitting an opportunity. Our team will review it shortly.</p>
-          <Link to="/opportunities" className="inline-block bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-primary-hover transition-all hover:-translate-y-0.5 hover:shadow-lg">Browse Opportunities</Link>
+          <h1 className="text-2xl font-bold mb-2">Opportunity Posted!</h1>
+          <p className="text-gray-600 mb-6">Your opportunity is now live and visible to volunteers.</p>
+          {isOrganization ? (
+            <button
+              onClick={() => navigate('/organization-dashboard')}
+              className="inline-block bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-primary-hover transition-all hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              Back to Dashboard
+            </button>
+          ) : (
+            <Link to="/opportunities" className="inline-block bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-primary-hover transition-all hover:-translate-y-0.5 hover:shadow-lg">
+              Browse Opportunities
+            </Link>
+          )}
         </div>
       </div>
     );
@@ -152,7 +203,6 @@ const SubmitOpportunityPage: React.FC = () => {
 
   return (
     <div className="relative flex w-full flex-col overflow-x-hidden bg-background-light page-transition">
-
       <div className="flex-grow flex flex-col py-10 px-4 md:px-8">
         <div className="flex flex-1 justify-center">
           <div className="flex flex-col max-w-[800px] w-full">
@@ -160,6 +210,13 @@ const SubmitOpportunityPage: React.FC = () => {
               <h1 className="text-slate-900 text-3xl md:text-4xl font-extrabold tracking-tight">Partner with LaunchServe</h1>
               <p className="text-slate-500 text-lg font-medium leading-relaxed max-w-2xl">Help us empower the next generation of changemakers.</p>
             </div>
+
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-center gap-2">
+                <span className="material-symbols-outlined">error</span>
+                <span>{error}</span>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="w-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="p-6 md:p-10 space-y-8">
@@ -328,8 +385,7 @@ const SubmitOpportunityPage: React.FC = () => {
                       <div className="flex items-center gap-3">
                         <input required name="timeCommitment" value={formData.timeCommitment} onChange={handleInputChange} className="w-24 rounded-xl border-slate-200 bg-slate-50 h-12 px-4" placeholder="e.g. 2-4" />
                         <select name="timeCommitmentUnit" value={formData.timeCommitmentUnit} onChange={handleInputChange} className="flex-1 rounded-xl border-slate-200 bg-slate-50 h-12 px-4">
-                          <option value="hrs/week">hrs/week</option>
-                          <option value="hrs/month">hrs/month</option>
+                          <option value="hours/week">hours/week</option>
                           <option value="hours/month">hours/month</option>
                           <option value="Flexible">Flexible</option>
                         </select>
